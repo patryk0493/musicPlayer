@@ -90,6 +90,8 @@ i {
 
 .selected_song {
     border: rgba(39, 174, 96,1.0) 3px solid;
+    top: -3px;
+    position: relative;
 }
 
 #line {
