@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <link rel="stylesheet" type="text/css" href="_css/main.css">
+    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script>
+        
+        
+        
+        
+        $(document).ready(function(){
+          var isPlaying = false;
+          var song = document.createElement('audio');
+          var curtime = 0;
+          var min = 0, sec = 0;
+          var isSelected = false;
+          var selectedSong = null;
+
+          $('#music_divs .song').click(function() {
+            
+            selectedSong = $(this);
+
+            if ($(this).hasClass( "selected_song" )) { // kliknieto na aktywna
+
+              if (isPlaying) {
+                song.pause();
+                console.log("pause");
+                isPlaying = false;
+                $('#music_controls #play_pause i').removeClass('fa-play').addClass('fa-pause');
+              } else { // nie odtwarze
+                song.play();
+                console.log("play");
+                isPlaying = true;
+                $('#music_controls #play_pause i').removeClass('fa-pause').addClass('fa-play');
+              }
+
+            } else { // kliknieto na niekatywna
+              isSelected = true;
+
+              if ( $('#music_divs div').hasClass( "selected_song" ) ) { //czy juz jaka została wybrana - tak
+
+                $('#music_divs div').removeClass("selected_song");
+                $(this).addClass("selected_song");
+                
+                if (!isPlaying) { //czy odtwarza - tak
+                  $('#music_controls #play_pause i').removeClass('fa-pause').addClass('fa-play');
+                }
+
+              } else { //czy juz jaka została wybrana - nie
+                $(this).addClass("selected_song");
+              }
+
+              song.setAttribute('src', $(this).attr('src'));
+              song.setAttribute('autoplay', 'autoplay');
+
+            }
+              
+            $('#music_controls #prev').click(function() {
+                
+              if ( selectedSong.prev('.song').length ) { // mozna wybrac poprzednia - tak 
+                  console.log("jest poprzednia:  " + selectedSong.prev('.song').length);
+                
+                selectedSong.removeClass("selected_song");
+                selectedSong = selectedSong.prev('song');
+                selectedSong.addClass("selected_song");
+                
+                
+                
+                //selectedSong = selectedSong.prev('.song');
+
+                
+                  // zaznacz
+                  //odtwórz
+
+              } else {  // mozna wybrac poprzednia - nie
+                console.log("nie ma poprzendiej");
+
+                  // nie cnie rób
+
+              }
+                    
+                    
+            });
+
+          });
+          
+          song.addEventListener('loadedmetadata', function() {
+                console.log("Playing " + song.src + ", for: " + song.duration + "seconds.");
+                song.play(); 
+                console.log("play");
+                isPlaying = true;
+              });
+          
+          var interV = setInterval(
+            function(){ 
+              curtime = parseInt(song.currentTime, 10);
+              console.log( curtime );
+              
+              min = (curtime/60) << 0,
+              sec = (curtime) % 60;
+              console.log( "Time " + min + ":" + sec );
+              $('#min').text(min);
+              $('#sec').text(sec);
+              $('#progress_indicator').css("left", curtime / song.duration * 100+ '%');
+            }, 40);
+            
+          $('#music_controls #play_pause').click(function() {
+              if (isPlaying) { //otdwarza
+                song.pause();
+                console.log("pause");
+                isPlaying = false;
+                $(this).find('i').removeClass('fa-play').addClass('fa-pause');
+              } else { // nie odtwarze
+                song.play();
+                console.log("play");
+                isPlaying = true;
+                $(this).find('i').removeClass('fa-pause').addClass('fa-play');
+              }
+            }); 
+          
+        });
+        
+        
+    </script>
+</head>
+<body>
+    <section id="music">
+        
+        <div id="music_divs">
+            
+            <div id="1" class="song" src="_mp3/abba.mp3"><span class="song_name">Utwór1</span></div>
+            <div id="2" class="song" src="_mp3/WarmRide.mp3"><span class="song_name">Utwór2</span></div>
+            <div id="3" class="song" src="_mp3/Warszawie.mp3"><span class="song_name">Utwór3</span></div>
+        
+        </div>
+        
+        <div id="progress">
+        
+            <div id="line">
+                
+                <div id="progress_indicator"></div>
+                
+            </div>
+            
+        </div>
+        
+        <div id="music_controls">
+            
+            <div id="prev" class="button"> <i class="fa fa-backward fa-2x"></i> </div>
+            <div id="play_pause" class="button"> <i class="fa fa-play fa-2x"></i> </div>
+            <div id="next" class="button"> <i class="fa fa-forward fa-2x"></i> </div>
+          
+            <div id="timer">
+              <span id="min"> 0 </span>
+              <span id="separator">:</span>
+              <span id="sec">0</span>
+            </div>
+            
+        </div>
+    
+    </section>
+</body>
+</html>
