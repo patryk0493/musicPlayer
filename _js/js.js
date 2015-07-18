@@ -12,6 +12,7 @@ $(document).ready(function(){
           var min = 0, sec = 0;
           var isSelected = false;
           var selectedSong = null;
+          var time = 2; //czas przewiniecia
 
           // klikniecie na div z muzyką
           $('#music_divs .song').click(function() {
@@ -74,7 +75,17 @@ $(document).ready(function(){
                 selectedSong.addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() { selectedSong.removeClass('shake animated') });
                   // niec nie rób
               }    
-            });
+          });
+  
+          $('#music_controls #forward').click(function() {
+            song.currentTime += time;
+            console.log("+" + time + "sec");
+          });
+  
+          $('#music_controls #backward').click(function() {
+            song.currentTime -= time;
+            console.log("-" + time + "sec");
+          });
           
           song.addEventListener('loadedmetadata', function() {
                 song.play(); 
@@ -87,6 +98,9 @@ $(document).ready(function(){
               curtime = parseInt(song.currentTime, 10);
               min = (curtime/60) << 0,
               sec = (curtime) % 60;
+              
+              if (min < 10) min='0'+min;
+              if (sec < 10) sec='0'+sec;
               $('#min').text(min);
               $('#sec').text(sec);
               $('#progress_indicator').css("left", curtime / song.duration * 100+ '%');
