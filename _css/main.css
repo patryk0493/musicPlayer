@@ -121,7 +121,7 @@ i {
 #music_controls {
     margin-top: 50px;   
     margin: 0 auto;
-    width: 210px;
+    width: 350px;
 }
 
 .button{
@@ -134,23 +134,13 @@ i {
     height: 40px;
     float: left;
     margin: 15px;
-}
-
-#prev {
     background-color: rgba(46, 204, 113,1.0);
-}
-
-#play_pause {
-	background-color: rgba(46, 204, 113,1.0);
-}
-
-#next {
-	background-color: rgba(46, 204, 113,1.0);
 }
 
 #timer {
     font-size: 20px;
-    text-align: center;
+    margin-top: 10px; 
+    float: right;
 }
 
 #separator {
