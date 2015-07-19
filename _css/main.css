@@ -100,17 +100,17 @@ i {
 }
 
 #line {
-    border-radius: 2px;
+    border-radius: 4px;
     width: 100%;
     background-color: rgba(52, 73, 94,1.0);
-	height: 4px;
+	height: 8px;
     position: relative;
 }
 
 #progress_indicator {
     position: absolute;
     background-color: rgba(46, 204, 113,1.0);
-    top: -8px;
+    top: -6px;
     border-radius: 50%;
     background-color: ;
 	width: 20px;
@@ -138,7 +138,7 @@ i {
 }
 
 #timer {
-    font-size: 20px;
+    font-size: 26px;
     margin-top: 10px; 
     float: right;
 }

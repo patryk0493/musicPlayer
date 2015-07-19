@@ -103,8 +103,8 @@ $(document).ready(function(){
               if (sec < 10) sec='0'+sec;
               $('#min').text(min);
               $('#sec').text(sec);
-              $('#progress_indicator').css("left", curtime / song.duration * 100+ '%');
-            }, 40);
+              $('#progress_indicator').css("left", (curtime / song.duration * 100) - 1 + '%');
+            }, 30);
             
           $('#music_controls #play_pause').click(function() {
               if (isPlaying) { 
@@ -119,4 +119,24 @@ $(document).ready(function(){
                 $(this).find('i').removeClass('fa-pause').addClass('fa-play');
               }
             }); 
+  
+          $('#line').click(function(e) {
+            
+            var line = $(this);  
+            var cTimer = 0;
+            var lineWidth = line.width();
+            var point = e.pageX;
+            var start = line.position();
+            var clickedPoint = point - start.left;
+            var percent = clickedPoint / lineWidth;
+            var songDuration = song.duration;
+            
+            cTimer = percent * songDuration;
+            cTimer = (e.pageX - line.position().left) / line.width() * song.duration;
+            console.log("percent: " + percent + "duration " + songDuration + " time:" + cTimer );
+            
+            song.currentTime =  cTimer ;
+            
+          }); 
+  
         });
