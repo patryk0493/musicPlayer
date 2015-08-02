@@ -13,6 +13,8 @@ $(document).ready(function(){
           var isSelected = false;
           var selectedSong = null;
           var time = 2; //czas przewiniecia
+          
+          var volume = 0.5;
 
           // klikniecie na div z muzyką
           $('#music_divs .song').click(function() {
@@ -21,9 +23,11 @@ $(document).ready(function(){
               if (isPlaying) {
                 song.pause();
                 console.log("pause");
+                volume = song.volume;
                 isPlaying = false;
                 $('#music_controls #play_pause i').removeClass('fa-play').addClass('fa-pause');
               } else { // nie odtwarze
+                song.volume = volume;
                 song.play();
                 console.log("play");
                 isPlaying = true;
@@ -51,7 +55,8 @@ $(document).ready(function(){
                 selectedSong = selectedSong.prev();
 
                 song.setAttribute('src', selectedSong.attr('src'));
-                song.setAttribute('autoplay', 'autoplay');  
+                song.setAttribute('autoplay', 'autoplay'); 
+                song.volume = volume;
                 song.play();
                 isPlaying = true;
               } else {  // mozna wybrac poprzednia - nie
@@ -69,6 +74,7 @@ $(document).ready(function(){
 
                 song.setAttribute('src', selectedSong.attr('src'));
                 song.setAttribute('autoplay', 'autoplay');  
+                song.volume = volume;
                 song.play();
                 isPlaying = true;
               } else {  // mozna wybrac poprzednia - nie
@@ -88,6 +94,7 @@ $(document).ready(function(){
           });
           
           song.addEventListener('loadedmetadata', function() {
+                song.volume = volume;
                 song.play(); 
                 console.log("play");
                 isPlaying = true;
@@ -108,11 +115,13 @@ $(document).ready(function(){
             
           $('#music_controls #play_pause').click(function() {
               if (isPlaying) { 
+                song.volume = volume;
                 song.pause();
                 console.log("pause");
                 isPlaying = false;
                 $(this).find('i').removeClass('fa-play').addClass('fa-pause');
               } else { 
+                song.volume = volume;
                 song.play();
                 console.log("play");
                 isPlaying = true;
@@ -139,4 +148,49 @@ $(document).ready(function(){
             
           }); 
   
+  
+          //obługa głośności
+  
+          
+          var step = 0.1;
+          
+          $('#up').click(function() {
+              if ( (song.volume + step < 1 && song.volume > 0) ) { 
+                console.log("glosniej :" + song.volume);
+                song.volume += step;
+                volume += step;
+                
+                if ( song.volume > 0.7) {
+                  $('#vol_indictor').html("<img src='3.png'>");
+                } 
+                if (  (song.volume > 0.4) && (song.volume <= 0.7) ) {
+                  $('#vol_indictor').html("<img src='2.png'>");
+                } 
+                if ( song.volume < 0.4 ) {
+                  $('#vol_indictor').html("<img src='1.png'>");
+                }
+                
+              }
+          }); 
+  
+          $('#down').click(function() {
+              if ( (song.volume - step > 0 && song.volume < 1) ) { 
+                console.log("ciszej: " + song.volume);
+                song.volume -= step;
+                volume -= step;
+                
+                if ( song.volume > 0.7) {
+                  $('#vol_indictor').html("<img src='3.png'>");
+                } 
+                if (  (song.volume > 0.4) && (song.volume <= 0.7) ) {
+                  $('#vol_indictor').html("<img src='2.png'>");
+                } 
+                if ( song.volume < 0.4 ) {
+                  $('#vol_indictor').html("<img src='1.png'>");
+                }
+                
+              }
+          });
+  
+        //koniec obługa głośności
         });
